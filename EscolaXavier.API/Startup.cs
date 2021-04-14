@@ -31,6 +31,8 @@ namespace EscolaXavier.API
         {
             services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore);
 
+            services.AddCors(c => c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin()));
+
             services.ApplicationServicesIoC();
             services.InfrastructureORM<EntityFrameworkIoC>();
 
