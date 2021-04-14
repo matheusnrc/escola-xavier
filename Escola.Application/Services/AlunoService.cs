@@ -43,7 +43,7 @@ namespace Escola.Application.Services
 
             await base.RemoveAsync(aluno);
 
-            return "Produto removido com sucesso.";
+            return "Aluno removido com sucesso.";
         }
 
         public async Task<Aluno> ObterPorId(int id)

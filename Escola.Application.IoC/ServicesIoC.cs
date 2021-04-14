@@ -14,6 +14,9 @@ namespace Escola.Application.IoC
             services.AddScoped(typeof(IServiceBase<>), typeof(ServiceBase<>));
 
             services.AddScoped<IAlunoService, AlunoService>();
+            services.AddScoped<ICursoService, CursoService>();
+            services.AddScoped<IMateriaService, MateriaService>();
+            services.AddScoped<IMatriculaService, MatriculaService>();
         }
     }
 }
