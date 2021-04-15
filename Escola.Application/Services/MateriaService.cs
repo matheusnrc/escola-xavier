@@ -28,7 +28,7 @@ namespace Escola.Application.Services
             var aEditar = await base.GetByIdAsync(materia.Id);
 
             aEditar.NomeMateria = materia.NomeMateria;
-            aEditar.Curso = materia.Curso;
+            aEditar.CursoId = materia.CursoId;
 
             await base.UpdateAsync(aEditar);
 

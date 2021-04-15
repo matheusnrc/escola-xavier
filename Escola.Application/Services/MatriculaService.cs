@@ -27,8 +27,8 @@ namespace Escola.Application.Services
         {
             var aEditar = await base.GetByIdAsync(matricula.Id);
 
-            aEditar.Aluno = matricula.Aluno;
-            aEditar.Materia = matricula.Materia;
+            aEditar.AlunoId = matricula.AlunoId;
+            aEditar. MateriaId = matricula.MateriaId;
             aEditar.Nota = matricula.Nota;
 
             await base.UpdateAsync(aEditar);
