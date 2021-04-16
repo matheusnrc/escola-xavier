@@ -7,8 +7,8 @@ Neste projeto utilizei as seguintes tecnologias:
 - Aplicação Web utilizando a biblioteca: React
 
 - Conceito utilizados no desenvolvimento desta aventura:
--> Api desenvolvida utilizando Padrão de Repositorio (Repository Pattern) com Entity Framework
+- Api desenvolvida utilizando Padrão de Repositorio (Repository Pattern) com Entity Framework
 
 - Foi utilizado as seguintes libs na aplicação Web (React):
--> Styled Components: Utilizando na estilição de componentes do JSX. 
--> Axios: Utilizado para fazer requisições com a Api
+- Styled Components: Utilizando na estilição de componentes do JSX. 
+- Axios: Utilizado para fazer requisições com a Api
