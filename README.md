@@ -1,6 +1,4 @@
 # Projeto projeto teste desenvolvido para a Escola Xavier
-## Available Scripts
-
 Neste projeto utilizei as seguintes tecnologias:
 
 - Api desenvolvida em ASP.Net Core (.Net 5)
