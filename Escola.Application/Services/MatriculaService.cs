@@ -20,7 +20,7 @@ namespace Escola.Application.Services
                 throw new ValidacaoException(mensagemErro);
 
             await repository.AddAsync(matricula);
-            return "Cadastro efetuado com sucesso.";
+            return "Matrícula efetuada com sucesso.";
         }
 
         public async Task<string> Editar(Matricula matricula)
