@@ -1,4 +1,5 @@
 ﻿using Escola.Application.Interfaces.Services.Standard;
+using Escola.Domain.DTOs;
 using Escola.Domain.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,5 +13,7 @@ namespace Escola.Application.Interfaces.Services
         Task<string> Cadastrar(Matricula matricula);
         Task<string> Editar(Matricula matricula);
         Task<string> Excluir(int id);
+        Task<List<MatriculaDto>> ObterStatusMatricula();
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Escola.Application.Interfaces.Services;
 using Escola.Domain;
+using Escola.Domain.DTOs;
 using Escola.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -30,6 +31,23 @@ namespace EscolaXavier.API.Controllers
             catch (ValidacaoException e)
             {
                 return Ok(Resultado<List<Matricula>>.Erro(e.Message));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+        [HttpGet("ObterTodosDetalhado")]
+        public async Task<IActionResult> ObterTodosDetalhado()
+        {
+            try
+            {
+                var resultado = await _matriculaService.ObterStatusMatricula();
+                return Ok(Resultado<List<MatriculaDto>>.OK(resultado));
+            }
+            catch (ValidacaoException e)
+            {
+                return Ok(Resultado<List<MatriculaDto>>.Erro(e.Message));
             }
             catch (Exception e)
             {
