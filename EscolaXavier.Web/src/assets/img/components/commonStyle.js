@@ -38,7 +38,7 @@ export const TituloLista = styled.h2`
   color: white;
   text-align: center;
 
-  padding-top: 20px;
+  padding: 20px 0px;
 `;
 
 export const Titulo = styled.h2`

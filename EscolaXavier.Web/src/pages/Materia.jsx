@@ -27,30 +27,41 @@ const Materia = () => {
   const [cursoId, setCursoId] = useState();
 
   useEffect(async () => {
-    await buscarCursos();
     await buscarMaterias();
+    await buscarCursos();
   }, []);
 
   async function cadastrarMateria(evento) {
     evento.preventDefault();
     evento.stopPropagation();
 
-    let retorno = null;
-    if (idMateriaEdicao == 0)
-      retorno = await api.post("Materia/Cadastrar", { nomeMateria, cursoId });
-    else {
-      retorno = await api.put("Materia/Editar", {
-        id: idMateriaEdicao,
-        nomeMateria,
-        cursoId,
-      });
-      setIdEdicao(0);
+    if (validarMateria()) {
+      let retorno = null;
+      if (idMateriaEdicao == 0)
+        retorno = await api.post("Materia/Cadastrar", { nomeMateria, cursoId });
+      else {
+        retorno = await api.put("Materia/Editar", {
+          id: idMateriaEdicao,
+          nomeMateria,
+          cursoId,
+        });
+        setIdEdicao(0);
+      }
+
+      alert(retorno.data.dados);
+      setNomeMateria("");
+      setCursoId(0);
+      await buscarMaterias();
+    }
+  }
+
+  function validarMateria() {
+    if (nomeMateria == "" || cursoId == undefined) {
+      alert("Informe os dados da matéria.");
+      return false;
     }
 
-    alert(retorno.data.dados);
-    setNomeMateria("");
-    setCursoId(0);
-    await buscarMaterias();
+    return true;
   }
 
   async function buscarMaterias() {
@@ -96,70 +107,78 @@ const Materia = () => {
               value={cursoId}
             >
               <option value={0}>Selecione um curso..</option>
-              {listaDeCursos.length > 0 && listaDeCursos.map((curso, index) => {
-                return (
-                  <option key={index} value={curso.id}>
-                    {curso.nomeCurso}
-                  </option>
-                );
-              })}
+              {listaDeCursos &&
+                listaDeCursos.map((curso, index) => {
+                  return (
+                    <option key={index} value={curso.id}>
+                      {curso.nomeCurso}
+                    </option>
+                  );
+                })}
             </Select>
 
             <Botao>
               {idMateriaEdicao == 0 ? "Cadastrar" : "Editar"} Matéria
             </Botao>
           </Formulario>
-          <TituloLista>Lista de Matéria</TituloLista>
+          {listaDeMaterias && (
+            <>
+              <TituloLista>Lista de Matéria</TituloLista>
+              <CabecalhoLista>
+                <DivFlexOne>
+                  <h3>Cod. Matéria</h3>
+                </DivFlexOne>
+                <DivFlexOne>
+                  <h3>Nome Matéria</h3>
+                </DivFlexOne>
+                <DivFlexOne>
+                  <h3>Curso</h3>
+                </DivFlexOne>
+                <DivFlexOne>
+                  <h3>Editar</h3>
+                </DivFlexOne>
+                <DivFlexOne>
+                  <h3>Deletar</h3>
+                </DivFlexOne>
+              </CabecalhoLista>
 
-          <CabecalhoLista>
-            <DivFlexOne>
-              <h3>Cod. Matéria</h3>
-            </DivFlexOne>
-            <DivFlexOne>
-              <h3>Nome Matéria</h3>
-            </DivFlexOne>
-            <DivFlexOne>
-              <h3>Curso</h3>
-            </DivFlexOne>
-            <DivFlexOne>
-              <h3>Editar</h3>
-            </DivFlexOne>
-            <DivFlexOne>
-              <h3>Deletar</h3>
-            </DivFlexOne>
-          </CabecalhoLista>
-
-          {listaDeMaterias && listaDeMaterias.map((materia, index) => {
-            return (
-              <ItemLista key={index}>
-                <DivFlexOne>{materia.id}</DivFlexOne>
-                <DivFlexOne>{materia.nomeMateria}</DivFlexOne>
-                <DivFlexOne>
-                  {listaDeCursos.find((x) => x.id == materia.cursoId).nomeCurso}
-                </DivFlexOne>
-                <DivFlexOne>
-                  <ImgLista
-                    src={editar}
-                    onClick={() =>
-                      preencherEdicao(
-                        materia.id,
-                        materia.nomeMateria,
-                        materia.cursoId
-                      )
-                    }
-                    alt="Editar"
-                  />
-                </DivFlexOne>
-                <DivFlexOne>
-                  <ImgLista
-                    src={deletar}
-                    onClick={() => deletarMateria(materia.id)}
-                    alt="Deletar"
-                  />
-                </DivFlexOne>
-              </ItemLista>
-            );
-          })}
+              {listaDeMaterias &&
+                listaDeMaterias.map((materia, index) => {
+                  return (
+                    <ItemLista key={index}>
+                      <DivFlexOne>{materia.id}</DivFlexOne>
+                      <DivFlexOne>{materia.nomeMateria}</DivFlexOne>
+                      <DivFlexOne>
+                        {
+                          listaDeCursos.find((x) => x.id == materia.cursoId)
+                            .nomeCurso
+                        }
+                      </DivFlexOne>
+                      <DivFlexOne>
+                        <ImgLista
+                          src={editar}
+                          onClick={() =>
+                            preencherEdicao(
+                              materia.id,
+                              materia.nomeMateria,
+                              materia.cursoId
+                            )
+                          }
+                          alt="Editar"
+                        />
+                      </DivFlexOne>
+                      <DivFlexOne>
+                        <ImgLista
+                          src={deletar}
+                          onClick={() => deletarMateria(materia.id)}
+                          alt="Deletar"
+                        />
+                      </DivFlexOne>
+                    </ItemLista>
+                  );
+                })}
+            </>
+          )}
         </Box>
       </Container>
     </main>

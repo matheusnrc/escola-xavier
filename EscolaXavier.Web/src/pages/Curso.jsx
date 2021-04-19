@@ -30,21 +30,32 @@ const Curso = () => {
   async function cadastrarCurso(evento) {
     evento.preventDefault();
     evento.stopPropagation();
+    if (validarCurso()) {
+      let retorno = null;
+      if (idCursoEdicao == 0)
+        retorno = await api.post("Curso/Cadastrar", { nomeCurso });
+      else {
+        retorno = await api.put("Curso/Editar", {
+          id: idCursoEdicao,
+          nomeCurso,
+        });
+        setIdEdicao(0);
+      }
 
-
-    let retorno = null;
-    if (idCursoEdicao == 0)
-      retorno = await api.post("Curso/Cadastrar", { nomeCurso });
-    else {
-      retorno = await api.put("Curso/Editar", { id: idCursoEdicao, nomeCurso });
-      setIdEdicao(0);
+      alert(retorno.data.dados);
+      setNomeCurso("");
+      await buscarCursos();
     }
-
-    alert(retorno.data.dados);
-    setNomeCurso("");
-    await buscarCursos();
   }
 
+  function validarCurso() {
+    if (nomeCurso == "") {
+      alert("Informe o nome do curso");
+      return false;
+    }
+
+    return true;
+  }
   async function buscarCursos() {
     let cursos = await api.get("Curso/ObterTodos");
     setListaDeCursos(cursos.data.dados);
@@ -74,45 +85,52 @@ const Curso = () => {
             />
             <Botao>{idCursoEdicao == 0 ? "Cadastrar" : "Editar"} Curso</Botao>
           </Formulario>
-          <TituloLista>Lista de Cursos</TituloLista>
 
-          <CabecalhoLista>
-            <DivFlexOne>
-              <h3>Cod. Curso</h3>
-            </DivFlexOne>
-            <DivFlexOne>
-              <h3>Nome Curso</h3>
-            </DivFlexOne>
-            <DivFlexOne>
-              <h3>Editar</h3>
-            </DivFlexOne>
-            <DivFlexOne>
-              <h3>Deletar</h3>
-            </DivFlexOne>
-          </CabecalhoLista>
-
-          {listaDeCursos && listaDeCursos.map((curso, index) => {
-            return (
-              <ItemLista key={index}>
-                <DivFlexOne>{curso.id}</DivFlexOne>
-                <DivFlexOne>{curso.nomeCurso}</DivFlexOne>
+          {listaDeCursos && (
+            <>
+              <TituloLista>Lista de Cursos</TituloLista>
+              <CabecalhoLista>
                 <DivFlexOne>
-                  <ImgLista
-                    src={editar}
-                    onClick={() => preencherEdicao(curso.id, curso.nomeCurso)}
-                    alt="Editar"
-                  />
+                  <h3>Cod. Curso</h3>
                 </DivFlexOne>
                 <DivFlexOne>
-                  <ImgLista
-                    src={deletar}
-                    onClick={() => deletarCurso(curso.id)}
-                    alt="Deletar"
-                  />
+                  <h3>Nome Curso</h3>
                 </DivFlexOne>
-              </ItemLista>
-            );
-          })}
+                <DivFlexOne>
+                  <h3>Editar</h3>
+                </DivFlexOne>
+                <DivFlexOne>
+                  <h3>Deletar</h3>
+                </DivFlexOne>
+              </CabecalhoLista>
+
+              {listaDeCursos &&
+                listaDeCursos.map((curso, index) => {
+                  return (
+                    <ItemLista key={index}>
+                      <DivFlexOne>{curso.id}</DivFlexOne>
+                      <DivFlexOne>{curso.nomeCurso}</DivFlexOne>
+                      <DivFlexOne>
+                        <ImgLista
+                          src={editar}
+                          onClick={() =>
+                            preencherEdicao(curso.id, curso.nomeCurso)
+                          }
+                          alt="Editar"
+                        />
+                      </DivFlexOne>
+                      <DivFlexOne>
+                        <ImgLista
+                          src={deletar}
+                          onClick={() => deletarCurso(curso.id)}
+                          alt="Deletar"
+                        />
+                      </DivFlexOne>
+                    </ItemLista>
+                  );
+                })}
+            </>
+          )}
         </Box>
       </Container>
     </main>
